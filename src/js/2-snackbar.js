@@ -4,6 +4,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const createPromiseButtonEl = document.getElementsByTagName('button')[0];
+const formEl = document.querySelector('.form');
 const inputEl = document.getElementsByName('delay')[0];
 const checkedFulfilled = document.getElementsByName('state')[0];
 const checkedRejected = document.getElementsByName('state')[1];
@@ -16,10 +17,10 @@ iziToast.info({
 });
 
 inputEl.addEventListener('input', function () {
-  inputValue = inputEl.value;
+  inputValue = Number(inputEl.value);
 });
 
-createPromiseButtonEl.addEventListener('click', event => {
+formEl.addEventListener('submit', event => {
   if (inputValue == null) {
     iziToast.warning({
       title: 'Caution',
@@ -33,7 +34,7 @@ createPromiseButtonEl.addEventListener('click', event => {
       } else {
         reject(inputValue);
       }
-    }, +inputValue);
+    }, inputValue);
   });
 
   promise.then(onFulFilled, onRejected);
@@ -47,9 +48,9 @@ function onFulFilled(delay) {
   });
 }
 
-function onRejected() {
+function onRejected(delay) {
   iziToast.error({
     title: 'Error',
-    message: 'Illegal operation',
+    message: `❌ Rejected promise in ${delay}ms`,
   });
 }
